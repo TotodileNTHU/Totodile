@@ -6,13 +6,14 @@ require 'rbnacl/libsodium'
 
 # Hold the information of pokemon
 class Pokemon
-  STORE_DIR = 'db/'.freeze
+  STORE_DIR = 'db/pokemons/'.freeze
 
-  attr_accessor :id, :name
+  attr_accessor :id, :name, :description
 
   def initialize(new_pokemon)
-  	@id = new_pokemon['id']
+  	@id = new_pokemon['id'] || new_id
   	@name = new_pokemon['name']
+    @description = new_pokemon['description']
   end
 
   def new_id
@@ -21,7 +22,8 @@ class Pokemon
 
   def to_json(options = {})
   	JSON({ id: @id,
-  	       name: @name },
+  	       name: @name,
+           description:@description},
   	    options)
   end
 

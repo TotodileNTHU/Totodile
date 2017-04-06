@@ -6,7 +6,7 @@ require 'rbnacl/libsodium'
 
 # Hold the information of message
 class Message
-  STORE_DIR = 'db/'.freeze
+  STORE_DIR = 'db/message/'.freeze
 
   attr_accessor :id, :creater_id,:content
 

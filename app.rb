@@ -25,6 +25,47 @@ class TotodileAPI < Sinatra::Base
   	JSON.pretty_generate(output)
   end
 
+  get '/api/v1/pokemons/:id/description' do
+    content_type 'text/plain'
+
+    begin
+      Pokemon.find(params[:id]).description
+    rescue => e
+      status 404
+      e.inspect
+    end
+  end
+
+  get '/api/v1/pokemons/:id.json' do
+    content_type 'application/json'
+
+    begin
+      output = { pokemon: Pokemon.find(params[:id]) }
+      JSON.pretty_generate(output)
+    rescue => e
+      logger.info "FAILED to GET pokemon: #{e.inspect}"
+      status 404
+    end
+  end
+
+  post '/api/v1/pokemons/?' do
+    content_type 'application/json'
+
+    begin
+      new_data = JSON.parse(request.body.read)
+      new_pokemon = Pokemon.new(new_data)
+      if new_pokemon.save
+        logger.info "NEW POKEMON STORED: #{new_pokemon.id}"
+      else
+        halt 400, "Could not store pokemon: #{new_pokemon}"
+      end
+
+      redirect '/api/v1/pokemons/' + new_pokemon.id + '.json'
+    rescue => e
+      logger.info "FAILED to create new pokemon: #{e.inspect}"
+      status 400
+    end
+  end
 
   #api about message
   get '/api/v1/messages/?' do
