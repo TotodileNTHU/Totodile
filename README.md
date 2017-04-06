@@ -13,7 +13,7 @@ API to store and retrieve messages
 - get `api/v1/messages/`: returns a json of all message IDs
 - get `api/v1/messages/[ID].json`: returns a json of all information about a configuration with given ID
 - get `api/v1/messages/[ID]/content`: returns a text/plain content with a message content for given ID
-- post `/api/v1/messages/` : store a message. Request body must be a json, which must contain content of message, creater_id of message, id of message is optional
+- post `/api/v1/messages/` : store a message. Request body must be a json, which must contain content of message, creator_id of message, id of message is optional
 
 - get `/api/v1/pokemons/` : returns a json of all pokemon IDs
 - get `api/v1/pokemons/[ID].json`: returns a json of all information about a pokemon with given ID

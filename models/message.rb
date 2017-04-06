@@ -8,11 +8,11 @@ require 'rbnacl/libsodium'
 class Message
   STORE_DIR = 'db/message/'.freeze
 
-  attr_accessor :id, :creater_id, :content
+  attr_accessor :id, :creator_id, :content
 
   def initialize(new_message)
     @id = new_message['id'] || new_id
-    @creater_id = new_message['creater_id']
+    @creator_id = new_message['creator_id']
     @content = new_message['content']
   end
 
@@ -22,7 +22,7 @@ class Message
 
   def to_json(options = {})
     JSON({ id: @id,
-           creater_id: @creater_id,
+           creator_id: @creator_id,
            content: @content },
          options)
   end
