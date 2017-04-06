@@ -7,7 +7,6 @@ require_relative 'models/message'
 
 # Totodile web service
 class TotodileAPI < Sinatra::Base
-
   configure do
     enable :logging
     Message.setup
@@ -15,14 +14,14 @@ class TotodileAPI < Sinatra::Base
   end
 
   get '/?' do
-  	'Totodile web API up at /api/v1'
+    'Totodile web API up at /api/v1'
   end
 
-  #api about pokemon
+  # api about pokemon
   get '/api/v1/pokemons/?' do
-  	content_type 'application/json'
-  	output = { pokemon_id: Pokemon.all }
-  	JSON.pretty_generate(output)
+    content_type 'application/json'
+    output = { pokemon_id: Pokemon.all }
+    JSON.pretty_generate(output)
   end
 
   get '/api/v1/pokemons/:id/description' do
@@ -67,7 +66,7 @@ class TotodileAPI < Sinatra::Base
     end
   end
 
-  #api about message
+  # api about message
   get '/api/v1/messages/?' do
     content_type 'application/json'
     output = { message_id: Message.all }
@@ -115,5 +114,4 @@ class TotodileAPI < Sinatra::Base
       status 400
     end
   end
-
 end
