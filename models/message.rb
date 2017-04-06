@@ -4,15 +4,16 @@ require 'json'
 require 'base64'
 require 'rbnacl/libsodium'
 
-# Hold the information of pokemon
-class Pokemon
+# Hold the information of message
+class Message
   STORE_DIR = 'db/'.freeze
 
-  attr_accessor :id, :name
+  attr_accessor :id, :creater_id,:content
 
-  def initialize(new_pokemon)
-  	@id = new_pokemon['id']
-  	@name = new_pokemon['name']
+  def initialize(new_message)
+  	@id = new_message['id'] || new_id
+  	@creater_id = new_message['creater_id']
+    @content = new_message['content']
   end
 
   def new_id
@@ -21,7 +22,8 @@ class Pokemon
 
   def to_json(options = {})
   	JSON({ id: @id,
-  	       name: @name },
+  	       creater_id: @creater_id,
+          content: @content},
   	    options)
   end
 
@@ -32,8 +34,8 @@ class Pokemon
   end
 
   def self.find(find_id)
-  	pokemon_file = File.read(STORE_DIR + find_id + '.txt')
-  	Pokemon.new JSON.parse(pokemon_file)
+  	message_file = File.read(STORE_DIR + find_id + '.txt')
+  	Message.new JSON.parse(message_file)
   end
 
   def self.all
@@ -43,6 +45,6 @@ class Pokemon
   end
 
   def self.setup
-    Dir.mkdir(Pokemon::STORE_DIR) unless Dir.exist? STORE_DIR
+    Dir.mkdir(Message::STORE_DIR) unless Dir.exist? STORE_DIR
   end
 end
