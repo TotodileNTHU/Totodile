@@ -107,6 +107,7 @@ class TotodileAPI < Sinatra::Base
 
     begin
       new_data = JSON.parse(request.body.read)
+      new_data['created_time'] = Time.now
       uid_found = User.find(uid: new_data['uid'])
       if uid_found
         new_post = Posting.new(new_data)
