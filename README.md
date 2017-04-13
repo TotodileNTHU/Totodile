@@ -1,5 +1,7 @@
 !https://gemnasium.com/badges/github.com/TotodileNTHU/Totodile.svg(Dependency Status)!:https://gemnasium.com/github.com/TotodileNTHU/Totodile
-
+[![Dependency Status](https://gemnasium.com/badges/github.com/TotodileNTHU/Totodile.svg)](https://gemnasium.com/github.com/TotodileNTHU/Totodile)
+{<img src="https://gemnasium.com/badges/github.com/TotodileNTHU/Totodile.svg" alt="Dependency Status" />}[https://gemnasium.com/github.com/TotodileNTHU/Totodile]
+<a href='https://gemnasium.com/github.com/TotodileNTHU/Totodile'><img src="https://gemnasium.com/badges/github.com/TotodileNTHU/Totodile.svg" alt="Dependency Status" /></a>
 # Totodie API
 API to store and retrieve messages
 
