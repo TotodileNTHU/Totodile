@@ -6,12 +6,8 @@ Sequel.migration do
     create_table(:postings) do
       primary_key :id
       foreign_key :uid
-
+      String :content
       Time :created_time
-      Time :updated_time
-      String :message
-      String :views
-      String :type
     end
   end
 end

@@ -3,7 +3,6 @@ require 'sinatra'
 require 'json'
 require 'base64'
 require_relative 'config/environment'
-require_relative 'models/pokemon'
 require_relative 'models/message'
 require_relative 'models/user'
 require_relative 'models/posting'
@@ -13,7 +12,6 @@ class TotodileAPI < Sinatra::Base
   configure do
     enable :logging
     Message.setup
-    Pokemon.setup
   end
 
   get '/?' do
@@ -23,7 +21,7 @@ class TotodileAPI < Sinatra::Base
   # api about message
   get '/api/v1/messages/?' do
     content_type 'application/json'
-    output = { message_id: Message.all }
+    output = {message_id: Message.all}
     JSON.pretty_generate(output)
   end
 
@@ -42,7 +40,7 @@ class TotodileAPI < Sinatra::Base
     content_type 'application/json'
 
     begin
-      output = { message: Message.find(params[:id]) }
+      output = {message: Message.find(params[:id])}
       JSON.pretty_generate(output)
     rescue => e
       logger.info "FAILED to GET message: #{e.inspect}"
@@ -68,26 +66,59 @@ class TotodileAPI < Sinatra::Base
       status 400
     end
   end
-
-  # api about postings
+  
+  # get specific posting by uid or pid
+  # '/api/v1/postings' List all postings
+  # '/api/v1/postings?uid=john8787'
+  # '/api/v1/postings?id=1'
   get '/api/v1/postings/?' do
     content_type 'application/json'
-    JSON.pretty_generate(data: Posting.all)
+
+    begin
+      subset = nil
+      if !params[:uid].nil?
+        puts 'uid'
+        puts params[:uid]
+        subset = Posting.where(uid: params[:uid])
+      elsif !params[:id].nil?
+        puts 'id'
+        puts params[:id]
+        subset = Posting.where(id: params[:id])
+      else
+        halt 200, JSON.pretty_generate(data: Posting.all)
+      end
+
+      result = []
+      subset.each { |row| result.push(row) }
+      if result.empty?
+        JSON.pretty_generate(data: 'none')
+      else
+        JSON.pretty_generate(data: result)
+      end
+
+    rescue => e
+      logger.info "FAILED to GET message: #{e.inspect}"
+      status 404
+    end
   end
 
-  post '/api/v1/postings/?' do
+  post '/api/v1/postings' do
     content_type 'application/json'
 
     begin
       new_data = JSON.parse(request.body.read)
-      new_message = Posting.new(new_data)
-      if new_message.save
-        logger.info "NEW MESSAGE STORED: #{new_message.id}"
+      uid_found = User.find(uid: new_data['uid'])
+      if uid_found
+        new_post = Posting.new(new_data)
+        if new_post.save
+          logger.info "NEW MESSAGE STORED: #{new_post.id}"
+          redirect '/api/v1/postings?id=' + new_post.id.to_s
+        else
+          halt 400, "Could not store message: #{new_post}"
+        end
       else
-        halt 400, "Could not store message: #{new_message}"
+        halt 400, 'invalid uid'
       end
-
-      redirect '/api/v1/messages/' + new_message.id + '.json'
     rescue => e
       logger.info "FAILED to create new message: #{e.inspect}"
       status 400
@@ -110,7 +141,7 @@ class TotodileAPI < Sinatra::Base
       puts post_data
       new_user = User.new(post_data)
       new_user.save
-      # redirect '/api/v1/messages/' + new_user.uid + '.json'
+        # redirect '/api/v1/messages/' + new_user.uid + '.json'
     rescue => e
       logger.info "FAILED to create new user: #{e.inspect}"
       status 400
