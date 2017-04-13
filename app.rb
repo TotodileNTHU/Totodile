@@ -66,7 +66,7 @@ class TotodileAPI < Sinatra::Base
       status 400
     end
   end
-  
+
   # get specific posting by uid or pid
   # '/api/v1/postings' List all postings
   # '/api/v1/postings?uid=john8787'
@@ -126,11 +126,18 @@ class TotodileAPI < Sinatra::Base
   end
 
 
-  # api about user
+  # list all user
   get '/api/v1/users/?' do
     content_type 'application/json'
     JSON.pretty_generate(data: User.all)
   end
+
+  # get user by id
+  get '/api/v1/users/:uid' do
+    content_type 'application/json'
+    JSON.pretty_generate(data: User.find(uid: params[:uid]))
+  end
+
 
   post '/api/v1/users/?' do
     content_type 'application/json'
@@ -139,9 +146,13 @@ class TotodileAPI < Sinatra::Base
       post_data = JSON.parse(request.body.read)
       puts 'get POST data'
       puts post_data
-      new_user = User.new(post_data)
-      new_user.save
-        # redirect '/api/v1/messages/' + new_user.uid + '.json'
+      if !User.find(uid: post_data['uid'])
+        new_user = User.new(post_data)
+        new_user.save
+        status 202
+      else
+        halt 403, 'user already existed'
+      end
     rescue => e
       logger.info "FAILED to create new user: #{e.inspect}"
       status 400
