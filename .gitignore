@@ -1,3 +1,2 @@
 db/*.db
-config/*.rb
 .bundle/*
