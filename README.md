@@ -14,12 +14,9 @@ API to store and retrieve messages
 
 ## Routes
 
-- get `api/v1/messages/`: returns a json of all message IDs
-- get `api/v1/messages/[ID].json`: returns a json of all information about a configuration with given ID
-- get `api/v1/messages/[ID]/content`: returns a text/plain content with a message content for given ID
-- post `/api/v1/messages/` : store a message. Request body must be a json, which must contain content of message, creator_id of message, id of message is optional
+- get `api/v1/postings`: returns a json of all post with [id, uid, content]
+- get `api/v1/postings?uid=[xxx]`: returns a json of all post post by uid
+- get `api/v1/postings?id=[xxx]`: returns a json of specific post with id
 
-- get `/api/v1/pokemons/` : returns a json of all pokemon IDs
-- get `api/v1/pokemons/[ID].json`: returns a json of all information about a pokemon with given ID
-- get `api/v1/pokemons/[ID]/description`: returns a text/plain content with a description of a pokemon for given ID
-- post `/api/v1/pokemons/` : store a pokemon information(name and id). Request body must be a json, which must contain name and decription, id of pokemon is optional
+- get `api/v1/users`: returns a json of all message IDs
+- get `api/v1/users/[ID]`: returns a json of all information about a user with given ID
