@@ -4,7 +4,7 @@ require 'sequel'
 Sequel.migration do
   change do
     create_table(:users) do
-      primary_key :id
+      primary_key :uid
       String :uid
       String :name
     end
