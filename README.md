@@ -1,3 +1,5 @@
+!https://gemnasium.com/badges/github.com/TotodileNTHU/Totodile.svg(Dependency Status)!:https://gemnasium.com/github.com/TotodileNTHU/Totodile
+
 # Totodie API
 API to store and retrieve messages
 
