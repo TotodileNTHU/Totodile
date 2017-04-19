@@ -8,9 +8,10 @@ API to store and retrieve messages
 1. $ bundle install
 2. $ rake db:migrate
 3. $ rake db:migrate RACK_ENV=test
-2. $ rackup
-3. in your browser 'localhost:9292/'
-4. use the following routes
+4. $ rake spec:all 
+5. $ rackup
+6. in your browser 'localhost:9292/'
+7. use the following routes
 
 ## Routes
 

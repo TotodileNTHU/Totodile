@@ -6,7 +6,6 @@ require 'minitest/rg'
 require 'rack/test'
 
 require './init.rb'
-require './app.rb'
 
 include Rack::Test::Methods
 

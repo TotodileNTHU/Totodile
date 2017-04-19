@@ -11,6 +11,7 @@ describe 'User spec' do
   end
 
   it 'HAPPY: should create a new user and check if it already existed' do
+    # Create a new User
     post '/api/v1/users',
     {uid: HAPPY_USER_UID1, name: HAPPY_USER_NAME1}.to_json,
     'CONTENT_TYPE' => 'application/json'
@@ -18,6 +19,7 @@ describe 'User spec' do
     last_response.status.must_equal 202
     User.count.must_be :>,0
 
+    # Create a new User with the same uid
     post '/api/v1/users',
     {uid: HAPPY_USER_UID1, name: HAPPY_USER_NAME2}.to_json,
     'CONTENT_TYPE' => 'application/json'
