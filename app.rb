@@ -77,12 +77,8 @@ class TotodileAPI < Sinatra::Base
     begin
       subset = nil
       if !params[:uid].nil?
-        puts 'uid'
-        puts params[:uid]
         subset = Posting.where(uid: params[:uid])
       elsif !params[:id].nil?
-        puts 'id'
-        puts params[:id]
         subset = Posting.where(id: params[:id])
       else
         halt 200, JSON.pretty_generate(data: Posting.all)
@@ -110,18 +106,19 @@ class TotodileAPI < Sinatra::Base
       new_data['created_time'] = Time.now
       uid_found = User.find(uid: new_data['uid'])
       if uid_found
+        new_data['user_id'] = uid_found.id
         new_post = Posting.new(new_data)
         if new_post.save
-          logger.info "NEW MESSAGE STORED: #{new_post.id}"
+          logger.info "NEW POSTING STORED: #{new_post.id}"
           redirect '/api/v1/postings?id=' + new_post.id.to_s
         else
-          halt 400, "Could not store message: #{new_post}"
+          halt 400, "Could not store posting: #{new_post}"
         end
       else
         halt 400, 'invalid uid'
       end
     rescue => e
-      logger.info "FAILED to create new message: #{e.inspect}"
+      logger.info "FAILED to create new posting: #{e.inspect}"
       status 400
     end
   end
@@ -145,8 +142,6 @@ class TotodileAPI < Sinatra::Base
 
     begin
       post_data = JSON.parse(request.body.read)
-      puts 'get POST data'
-      puts post_data
       if !User.find(uid: post_data['uid'])
         new_user = User.new(post_data)
         new_user.save

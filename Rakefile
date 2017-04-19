@@ -1,14 +1,22 @@
 # omitted earlier code
 require 'rake/testtask'
 
-require 'sequel'
-require_relative 'init'
+task :default do
+  puts `rake -T`
+end
+
+Rake::TestTask.new(:spec) do |t|
+  t.pattern = 'spec/*_spec.rb'
+  t.warning = false
+end
 
 namespace :db do
   require 'sequel'
   Sequel.extension :migration
   desc 'Run migrations'
   task :migrate do
+    require 'sequel'
+    require_relative 'init'
     puts 'Migrating database to latest'
     Sequel::Migrator.run(DB, 'db/migrations')
   end
@@ -21,4 +29,24 @@ namespace :db do
 end
   desc 'Perform migration reset (full rollback and migration)'
   task reset: [:rollback, :migrate]
+end
+
+namespace :spec do 
+  desc 'run all the spec'
+  task all: [:clear, :user, :posting]
+
+  task :clear do
+    puts '******* clear database *******'
+    sh "ruby spec/clean_db.rb"
+  end
+
+  task :user do
+    puts '******* run user spec *******'
+    sh "ruby spec/user_spec.rb"
+  end
+
+  task :posting do
+    puts '******* run posting spec *******'
+    sh "ruby spec/posting_spec.rb"
+  end
 end
