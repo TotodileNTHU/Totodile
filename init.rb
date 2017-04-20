@@ -3,4 +3,3 @@ folders = 'config,lib,values,models,representers,queries,services,controllers,wo
 Dir.glob("./{#{folders}}/init.rb").each do |file|
   require file
 end
-

@@ -30,6 +30,8 @@ class TotodileAPI < Sinatra::Base
       end
     rescue => e
       logger.info "FAILED to create new user: #{e.inspect}"
+      print('WTF')
+      print(request.body.read)
       status 400
     end
   end

@@ -11,6 +11,8 @@ gem 'sequel'
 
 gem 'tux'
 gem 'hirb'
+gem 'econfig'
+
 
 group :development do
   gem 'rerun'

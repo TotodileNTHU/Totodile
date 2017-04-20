@@ -1,12 +1,19 @@
 # frozen_string_literal: true
+require_relative '../../lib/secure_db'
 require 'sinatra'
 require 'json'
+require 'base64'
+require 'rbnacl/libsodium'
 
 class TotodileAPI < Sinatra::Base
   # get specific posting by uid or pid
   # '/api/v1/postings' List all postings
   # '/api/v1/postings?uid=john8787'
   # '/api/v1/postings?id=1'
+
+  key = [SecureDB.config.secret_key].pack('H*')
+  box = RbNaCl::SimpleBox.from_secret_key(key)
+
   get '/api/v1/postings/?' do
     content_type 'application/json'
 
@@ -21,7 +28,9 @@ class TotodileAPI < Sinatra::Base
       end
 
       result = []
-      subset.each { |row| result.push(row) }
+      subset.each { |row|
+        row[:content] = box.decrypt(Base64.decode64(row[:content]))
+        result.push(row) }
       if result.empty?
         JSON.pretty_generate(data: 'none')
       else
@@ -36,13 +45,14 @@ class TotodileAPI < Sinatra::Base
 
   post '/api/v1/postings' do
     content_type 'application/json'
-
     begin
       new_data = JSON.parse(request.body.read)
       new_data['created_time'] = Time.now
-      uid_found = User.find(uid: new_data['uid'])
-      if uid_found
-        new_data['user_id'] = uid_found.id
+      user = User.find(uid: new_data['uid'])
+      if user
+        new_data['user_id'] = user.id
+        new_data['content'] = Base64.strict_encode64(box.encrypt(new_data['content']))
+        print(new_data)
         new_post = Posting.new(new_data)
         if new_post.save
           logger.info "NEW POSTING STORED: #{new_post.id}"

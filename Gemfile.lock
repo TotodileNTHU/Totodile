@@ -6,6 +6,7 @@ GEM
     bond (0.5.1)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
+    econfig (2.0.0)
     erubis (2.7.0)
     ffi (1.9.18)
     flay (2.8.1)
@@ -80,6 +81,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  econfig
   flay
   flog
   hirb
