@@ -17,23 +17,30 @@ class TotodileAPI < Sinatra::Base
 
 
   post '/api/v1/accounts/?' do
-    content_type 'application/json'
+    post_data = request.body.read
+    result = CreateAccount.call(post_data)
 
-    begin
-      post_data = JSON.parse(request.body.read)
-      if !Account.find(uid: post_data['uid'])
-        new_account = Account.new(post_data)
-        new_account.save
-        status 202
-      else
-        halt 403, 'account already existed'
-      end
-    rescue => e
-      logger.info "FAILED to create new account: #{e.inspect}"
-      print('WTF')
-      print(request.body.read)
-      status 400
+    if result.success?
+      content_type 'application/json'
+      result.value.to_json
+    else
+      ErrorRepresenter.new(result.value).to_status_response
     end
+    # begin
+    #   post_data = JSON.parse(request.body.read)
+    #   if !Account.find(uid: post_data['uid'])
+    #     new_account = Account.new(post_data)
+    #     new_account.save
+    #     status 202
+    #   else
+    #     halt 403, 'account already existed'
+    #   end
+    # rescue => e
+    #   logger.info "FAILED to create new account: #{e.inspect}"
+    #   print('WTF')
+    #   print(request.body.read)
+    #   status 400
+    # end
   end
   
 end

@@ -14,6 +14,11 @@ gem 'tux'
 gem 'hirb'
 gem 'econfig'
 gem 'rake'
+gem 'roar'
+gem 'multi_json'
+gem 'dry-monads'
+gem 'dry-container'
+gem 'dry-transaction'
 
 group :development do
   gem 'rerun'

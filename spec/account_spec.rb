@@ -16,7 +16,7 @@ describe 'Account spec' do
     {uid: HAPPY_ACCOUNT_UID1, name: HAPPY_ACCOUNT_NAME1}.to_json,
     'CONTENT_TYPE' => 'application/json'
 
-    last_response.status.must_equal 202
+    last_response.status.must_equal 200
     Account.count.must_be :>,0
 
     # Create a new Account with the same uid
@@ -24,8 +24,7 @@ describe 'Account spec' do
     {uid: HAPPY_ACCOUNT_UID1, name: HAPPY_ACCOUNT_NAME2}.to_json,
     'CONTENT_TYPE' => 'application/json'
 
-    last_response.status.must_equal 403
-    last_response.body.must_equal 'account already existed'
+    last_response.status.must_equal 400
   end
   
   it 'HAPPY: should get an existed account' do
