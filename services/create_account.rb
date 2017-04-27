@@ -32,9 +32,9 @@ class CreateAccount
 
   register :write_to_account_table, lambda { |data|
   	result = Account.create(
-  			   uid: data[:uid],
-  			   name: data[:name]
-  		     )
+  		uid: data[:uid],
+  		name: data[:name]
+  	)
   	Right(result)
   }
 end

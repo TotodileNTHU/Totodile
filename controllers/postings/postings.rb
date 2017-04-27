@@ -44,28 +44,14 @@ class TotodileAPI < Sinatra::Base
   end
 
   post '/api/v1/postings' do
-    content_type 'application/json'
-    begin
-      new_data = JSON.parse(request.body.read)
-      new_data['created_time'] = Time.now
-      account = Account.find(uid: new_data['uid'])
-      if account
-        new_data['account_id'] = account.id
-        new_data['content'] = Base64.strict_encode64(box.encrypt(new_data['content']))
-        print(new_data)
-        new_post = Posting.new(new_data)
-        if new_post.save
-          logger.info "NEW POSTING STORED: #{new_post.id}"
-          redirect '/api/v1/postings?id=' + new_post.id.to_s
-        else
-          halt 400, "Could not store posting: #{new_post}"
-        end
-      else
-        halt 400, 'invalid uid'
-      end
-    rescue => e
-      logger.info "FAILED to create new posting: #{e.inspect}"
-      status 400
+    post_data = JSON.parse(request.body.read)
+    result = CreatePosting.call(post_data)
+
+    if result.success?
+      content_type 'application/json'
+      result.value.to_json
+    else
+      ErrorRepresenter.new(result.value).to_status_response
     end
   end
   

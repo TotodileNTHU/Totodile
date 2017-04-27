@@ -26,21 +26,6 @@ class TotodileAPI < Sinatra::Base
     else
       ErrorRepresenter.new(result.value).to_status_response
     end
-    # begin
-    #   post_data = JSON.parse(request.body.read)
-    #   if !Account.find(uid: post_data['uid'])
-    #     new_account = Account.new(post_data)
-    #     new_account.save
-    #     status 202
-    #   else
-    #     halt 403, 'account already existed'
-    #   end
-    # rescue => e
-    #   logger.info "FAILED to create new account: #{e.inspect}"
-    #   print('WTF')
-    #   print(request.body.read)
-    #   status 400
-    # end
   end
   
 end

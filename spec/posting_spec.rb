@@ -22,7 +22,6 @@ describe 'Posting spec' do
     'CONTENT_TYPE' => 'application/json'
 
     last_response.status.must_equal 400
-    last_response.body.must_equal 'invalid uid'
   end
 
   it 'HAPPY: should create a new posting then get the new posting' do

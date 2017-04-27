@@ -7,4 +7,5 @@ class PostingRepresenter < Roar::Decorator
   property :account_id
   property :uid
   property :content
+  property :created_time
 end

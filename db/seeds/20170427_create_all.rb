@@ -11,3 +11,9 @@ DIR = File.dirname(__FILE__)
 ALL_ACCOUNTS_INFO = YAML.load_file("#{DIR}/accounts_seed.yaml")
 ALL_POSTINGS_INFO = YAML.load_file("#{DIR}/postings_seed.yaml")
 
+def create_accounts
+  ALL_ACCOUNTS_INFO.each do |account_info|
+  	CreateAccount.call(account_info.to_json)
+  end
+end
+
