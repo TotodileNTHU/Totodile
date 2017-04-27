@@ -16,7 +16,8 @@ class CreateAccount
   register :validate_request_json, lambda { |request_body|
   	begin
 			puts 'request_body ' + request_body
-  	  account_representation = AccountRepresenter.new(Account.new)
+      # S_Account is the value object in /values/account.rb
+  	  account_representation = AccountRepresenter.new(S_Account.new)
   	  puts 'fuck account_representation'
 			puts account_representation.from_json(request_body)
 			Right(account_representation.from_json(request_body))
