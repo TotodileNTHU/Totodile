@@ -15,17 +15,15 @@ class CreateAccount
 
   register :validate_request_json, lambda { |request_body|
   	begin
-			# puts 'request_body ' + request_body
+			puts 'request_body ' + request_body
+			json_data = JSON.parse(request_body)
+			data = {uid: json_data['uid'], name: json_data['name']}
+			puts data
       # S_Account is the value object in /values/account.rb
   	  # account_representation = AccountRepresenter.new(S_Account.new)
   	  # puts 'fuck account_representation'
 			# puts account_representation.from_json(request_body)
 			# Right(account_representation.from_json(request_body))
-  	  data = {
-        uid: request_body['uid'],
-        name: request_body['name'],
-        password: request_body['password']
-      }
       Right(data)
     rescue
   	  Left(Error.new('Wrong input account data'))
@@ -45,7 +43,7 @@ class CreateAccount
   		uid: data[:uid],
   		name: data[:name]
   	)
-		account.password = data[:password]
+		account.password = '94788'
 		account.save
   	Right(account)
   }
