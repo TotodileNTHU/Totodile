@@ -18,6 +18,7 @@ class TotodileAPI < Sinatra::Base
 
   post '/api/v1/accounts/?' do
     post_data = request.body.read
+    puts 'api get post_data' + post_data
     result = CreateAccount.call(post_data)
 
     if result.success?

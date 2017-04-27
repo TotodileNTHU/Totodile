@@ -43,15 +43,8 @@ class SecureDB < Sinatra::Base
     opslimit = 2**20
     memlimit = 2**24
     digest_size = 64
-    puts 'salt'
-    puts salt
-    puts 'pwd'
-    puts pwd
-    puts pwd.bytesize
-    puts 'digest before'
     digest = RbNaCl::PasswordHash.scrypt(pwd, Base64.strict_decode64(salt),
                                          opslimit, memlimit, digest_size)
-    puts 'digest after'
     Base64.strict_encode64(digest)
   end
 

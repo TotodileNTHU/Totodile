@@ -11,8 +11,6 @@ class Account < Sequel::Model
 
   def password=(new_password)
     new_salt = SecureDB.new_salt
-    puts 'wtf new_salt ' + new_salt
-    puts 'new_password ' + new_password
     hashed = SecureDB.hash_password(new_salt, new_password)
     self.salt = new_salt
     self.password_hash = hashed
@@ -26,8 +24,7 @@ class Account < Sequel::Model
   def to_json(options = {})
     JSON({ type: 'account',
            uid: uid,
-           name: name,
-            password: password},
+           name: name},
          options)
   end
 end

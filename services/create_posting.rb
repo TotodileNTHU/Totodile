@@ -20,7 +20,7 @@ class CreatePosting
     uid = request_body['uid']
     account = Account.find(uid: uid)
     if account
-      key = [SecureDB.config.secret_key].pack('H*')
+      key = [SecureDB.config.DB_KEY].pack('H*')
       box = RbNaCl::SimpleBox.from_secret_key(key)
       data = {
         account_id: account.id,
