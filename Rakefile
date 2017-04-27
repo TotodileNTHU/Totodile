@@ -1,5 +1,8 @@
 # omitted earlier code
 require 'rake/testtask'
+require './init.rb'
+
+puts "Environment: #{ENV['RACK_ENV'] || 'development'}"
 
 task :default do
   puts `rake -T`
@@ -11,24 +14,43 @@ Rake::TestTask.new(:spec) do |t|
 end
 
 namespace :db do
-  require 'sequel'
   Sequel.extension :migration
+
   desc 'Run migrations'
   task :migrate do
-    require 'sequel'
-    require_relative 'init'
     puts 'Migrating database to latest'
     Sequel::Migrator.run(DB, 'db/migrations')
   end
+  
   desc 'Rollback database to specified target'
   # e.g. $ rake db:rollback[100]
   task :rollback, [:target] do |_, args|
     target = args[:target] ? args[:target] : 0
     puts "Rolling back database to #{target}"
     Sequel::Migrator.run(DB, 'db/migrations', target: target)
-end
-  desc 'Perform migration reset (full rollback and migration)'
-  task reset: [:rollback, :migrate]
+  end
+
+  task :reset_seeds do
+    puts '******* reset_seeds *******'
+    tables = [:accounts, :postings]
+    tables.each { |table| DB[table].delete }
+  end
+
+  desc 'Seeds the development database'
+  task :seed do
+    require 'sequel'
+    require 'sequel/extensions/seed'
+    puts '******* seed *******'
+    Sequel::Seed.setup :development
+    Sequel.extension :seed
+    Sequel::Seeder.apply(DB, 'db/seeds')
+  end
+
+  desc 'Delete all data and reseed'
+  task reseed: [:reset_seeds, :seed]
+
+  desc 'Perform migration reset (full rollback, migration, and reseed)'
+  task reset: [:rollback, :migrate, :reseed]
 end
 
 namespace :spec do 

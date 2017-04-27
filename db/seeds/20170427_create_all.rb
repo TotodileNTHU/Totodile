@@ -17,3 +17,12 @@ def create_accounts
   end
 end
 
+def create_postings
+  ALL_POSTINGS_INFO.each do |posting_info|
+  	data = {
+  	  uid: posting_info[:uid],
+      content: posting_info[:content]
+  	}.to_json
+  	CreatePosting.call(JSON.parse(data))
+  end
+end
