@@ -6,4 +6,5 @@ class AccountRepresenter < Roar::Decorator
 
   property :uid
   property :name
+  property :password
 end

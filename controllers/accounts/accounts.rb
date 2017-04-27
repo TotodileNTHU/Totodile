@@ -27,5 +27,5 @@ class TotodileAPI < Sinatra::Base
       ErrorRepresenter.new(result.value).to_status_response
     end
   end
-  
+
 end

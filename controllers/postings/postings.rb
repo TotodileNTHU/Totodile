@@ -11,7 +11,7 @@ class TotodileAPI < Sinatra::Base
   # '/api/v1/postings?uid=john8787'
   # '/api/v1/postings?id=1'
 
-  key = [SecureDB.config.secret_key].pack('H*')
+  key = [SecureDB.config.DB_KEY].pack('H*')
   box = RbNaCl::SimpleBox.from_secret_key(key)
 
   get '/api/v1/postings/?' do
