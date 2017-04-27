@@ -3,7 +3,7 @@ require_relative 'spec_helper'
 
 describe 'Posting spec' do
   it 'SAD: should not get posting with invalid uid' do
-    get '/api/v1/postings?uid=' + SAD_USER_UID
+    get '/api/v1/postings?uid=' + SAD_ACCOUNT_UID
  
     result = JSON.parse last_response.body
     result['data'].must_equal 'none'
@@ -18,7 +18,7 @@ describe 'Posting spec' do
 
   it 'SAD: should not create a new posting with invalid uid' do
     post '/api/v1/postings',
-    {uid: SAD_USER_UID, content: 'whatever'}.to_json,
+    {uid: SAD_ACCOUNT_UID, content: 'whatever'}.to_json,
     'CONTENT_TYPE' => 'application/json'
 
     last_response.status.must_equal 400
@@ -26,21 +26,21 @@ describe 'Posting spec' do
   end
 
   it 'HAPPY: should create a new posting then get the new posting' do
-    # Create a new Posting with HAPPY_USER_UID1
+    # Create a new Posting with HAPPY_ACCOUNT_UID1
     post '/api/v1/postings',
-    {uid: HAPPY_USER_UID1, content: HAPPY_POSTING_CONTENT}.to_json,
+    {uid: HAPPY_ACCOUNT_UID1, content: HAPPY_POSTING_CONTENT}.to_json,
     'CONTENT_TYPE' => 'application/json'
 
-    User.find(uid: HAPPY_USER_UID1).postings.count.must_be :>,0
+    Account.find(uid: HAPPY_ACCOUNT_UID1).postings.count.must_be :>,0
 
-    # Find the Posting just created by uid = HAPPY_USER_UID1
-    get '/api/v1/postings?uid=' + HAPPY_USER_UID1
+    # Find the Posting just created by uid = HAPPY_ACCOUNT_UID1
+    get '/api/v1/postings?uid=' + HAPPY_ACCOUNT_UID1
  
     result = JSON.parse last_response.body
     result['data'].first['content'].must_equal HAPPY_POSTING_CONTENT
     
     # Find the Posting just created by id = Posting id
-    id_tmp = User.find(uid: HAPPY_USER_UID1).postings.first.id
+    id_tmp = Account.find(uid: HAPPY_ACCOUNT_UID1).postings.first.id
     get '/api/v1/postings?id=' + id_tmp.to_s
  
     result = JSON.parse last_response.body

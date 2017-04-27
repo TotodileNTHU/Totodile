@@ -48,9 +48,9 @@ class TotodileAPI < Sinatra::Base
     begin
       new_data = JSON.parse(request.body.read)
       new_data['created_time'] = Time.now
-      user = User.find(uid: new_data['uid'])
-      if user
-        new_data['user_id'] = user.id
+      account = Account.find(uid: new_data['uid'])
+      if account
+        new_data['account_id'] = account.id
         new_data['content'] = Base64.strict_encode64(box.encrypt(new_data['content']))
         print(new_data)
         new_post = Posting.new(new_data)

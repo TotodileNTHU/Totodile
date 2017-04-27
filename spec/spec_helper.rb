@@ -13,10 +13,10 @@ def app
   TotodileAPI
 end
 
-SAD_USER_UID = 'sad_user_uid'
+SAD_ACCOUNT_UID = 'sad_user_uid'
 SAD_POSTING_ID = '-1'
-HAPPY_USER_UID1 = 'leo'
-HAPPY_USER_UID2 = 'cory'
-HAPPY_USER_NAME1 = 'balaboom'
-HAPPY_USER_NAME2 = 'coryhasgirlfriend'
+HAPPY_ACCOUNT_UID1 = 'leo'
+HAPPY_ACCOUNT_UID2 = 'cory'
+HAPPY_ACCOUNT_NAME1 = 'balaboom'
+HAPPY_ACCOUNT_NAME2 = 'coryhasgirlfriend'
 HAPPY_POSTING_CONTENT = 'lalala'

@@ -5,7 +5,7 @@ Sequel.migration do
   change do
     create_table(:postings) do
       primary_key :id
-      foreign_key :user_id
+      foreign_key :account_id
       
       String :uid
       String :content

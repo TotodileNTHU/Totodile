@@ -2,5 +2,5 @@
 require 'json'
 require 'sequel'
 
-require_relative 'user'
+require_relative 'account'
 require_relative 'posting'

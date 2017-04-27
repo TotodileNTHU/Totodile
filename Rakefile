@@ -33,16 +33,16 @@ end
 
 namespace :spec do 
   desc 'run all the spec'
-  task all: [:clear, :user, :posting]
+  task all: [:clear, :account, :posting]
 
   task :clear do
     puts '******* clear database *******'
     sh "ruby spec/clean_db.rb"
   end
 
-  task :user do
-    puts '******* run user spec *******'
-    sh "ruby spec/user_spec.rb"
+  task :account do
+    puts '******* run account spec *******'
+    sh "ruby spec/account_spec.rb"
   end
 
   task :posting do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
-ruby '2.4.0'
+ruby '2.4.1'
 
 gem 'json'
 gem 'puma'
@@ -8,11 +8,12 @@ gem 'rbnacl-libsodium'
 gem 'sinatra'
 
 gem 'sequel'
+gem 'sequel-seed'
 
 gem 'tux'
 gem 'hirb'
 gem 'econfig'
-
+gem 'rake'
 
 group :development do
   gem 'rerun'

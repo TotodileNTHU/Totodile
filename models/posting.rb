@@ -2,8 +2,8 @@
 
 # Represents a Posting's stored information
 class Posting < Sequel::Model
-  many_to_one :user
-  set_allowed_columns :content,:uid,:created_time,:user_id
+  many_to_one :account
+  set_allowed_columns :content,:uid,:created_time,:account_id
 
   def to_json(options = {})
     JSON({ type: 'posting',
