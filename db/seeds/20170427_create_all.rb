@@ -1,6 +1,6 @@
 Sequel.seed(:development) do
   def run 
-    puts 'Seeding accounts, projects'
+    puts 'Seeding accounts, postings'
     create_accounts
     create_postings
   end
