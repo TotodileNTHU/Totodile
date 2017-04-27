@@ -5,6 +5,6 @@ class SecureDB < Sinatra::Base
 
   extend Econfig::Shortcut
   Econfig.env = settings.environment.to_s
-  Econfig.root = settings.root
+  Econfig.root = File.expand_path('../', settings.root)
 
 end
