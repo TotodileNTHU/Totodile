@@ -16,7 +16,7 @@ class CreateAccount
   register :validate_request_json, lambda {|request_body|
     begin
       json_data = JSON.parse(request_body)
-      data = {uid: json_data['uid'], name: json_data['name']}
+      data = {uid: json_data['uid'], name: json_data['name'], password: json_data['password']}
       # S_Account is the value object in /values/account.rb
       # account_representation = AccountRepresenter.new(S_Account.new)
       # puts 'fuck account_representation'
@@ -46,7 +46,7 @@ class CreateAccount
         password_hash: '',
         salt: '',
     )
-    account.password = '94788'
+    account.password = data[:password]
     account.save
     Right(account)
   }
