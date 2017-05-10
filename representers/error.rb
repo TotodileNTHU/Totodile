@@ -10,6 +10,7 @@ class ErrorRepresenter < Roar::Decorator
   ERROR = {
     cannot_process: 422,
     not_found: 404,
+    authenticate_error: 403,
     bad_request: 400
   }.freeze
 

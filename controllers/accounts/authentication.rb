@@ -1,17 +1,16 @@
 require 'sinatra'
 
 # /api/v1/accounts authentication related routes
-class ShareConfigurationsAPI < Sinatra::Base
+class TotodileAPI < Sinatra::Base
   post '/api/v1/accounts/authenticate' do
-    content_type 'application/json'
-    begin
-      credentials = JSON.parse(request.body.read)
-      account = AuthenticateAccount.call(credentials)
-    rescue => e
-      halt 500
-      logger.info "Cannot authenticate #{credentials['username']}: #{e}"
+    credentials = request.body.read
+    result = AuthenticateAccount.call(credentials)
+    
+    if result.success?
+      content_type 'application/json'
+      result.value.to_json
+    else
+      ErrorRepresenter.new(result.value).to_status_response
     end
-
-    account ? { account: account }.to_json : status(403)
   end
 end

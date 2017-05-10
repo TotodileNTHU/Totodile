@@ -29,7 +29,7 @@ class CreateAccount
   }
 
   register :check_if_already_exist, lambda {|data|
-    puts 'check_if_already_exist ' + data.to_s
+    # puts 'check_if_already_exist ' + data.to_s
     if Account.find(uid: data[:uid])
       puts 'Left(Error.This account already exist.'
       Left(Error.new('This account already exist.'))
@@ -39,7 +39,7 @@ class CreateAccount
   }
 
   register :write_to_account_table, lambda {|data|
-    puts 'write_to_account_table'
+    # puts 'write_to_account_table'
     account = Account.create(
         uid: data[:uid],
         name: data[:name],
