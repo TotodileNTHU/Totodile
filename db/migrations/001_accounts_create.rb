@@ -7,6 +7,7 @@ Sequel.migration do
       primary_key :id
       String :uid
       String :name
+      String :email
       String :password_hash, text: true
       String :salt
     end

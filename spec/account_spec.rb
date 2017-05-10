@@ -13,7 +13,7 @@ describe 'Account spec' do
   it 'HAPPY: should create a new account' do
     puts '# Create a new Account'
     post '/api/v1/accounts',
-         {uid: HAPPY_ACCOUNT_UID1, name: HAPPY_ACCOUNT_NAME1, password: HAPPY_PASSWORD}.to_json,
+         {uid: HAPPY_ACCOUNT_UID1, name: HAPPY_ACCOUNT_NAME1, email: HAPPY_EMAIL, password: HAPPY_PASSWORD}.to_json,
          'CONTENT_TYPE' => 'application/json'
 
     last_response.status.must_equal 200
