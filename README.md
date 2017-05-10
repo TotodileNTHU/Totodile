@@ -21,3 +21,6 @@ API to store and retrieve messages
 
 - get `api/v1/users`: returns a json of all message IDs
 - get `api/v1/users/[ID]`: returns a json of all information about a user with given ID
+
+
+## Deploy to Heroku
