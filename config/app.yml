@@ -1,4 +1,9 @@
+---
 development:
-  DB_KEY: "4902dffafd89fae7b6cf3dda8265afff66c026723f997e722a5febaf30972b1f"
+  SECURE_SCHEME: 'HTTP'
+  
 test:
-  DB_KEY: "4902dffafd89fae7b6cf3dda8265afff66c026723f997e722a5febaf30972b1f"
+  SECURE_SCHEME: 'HTTP'
+  
+production:
+  SECURE_SCHEME: 'HTTPS'

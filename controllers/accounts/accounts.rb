@@ -15,7 +15,6 @@ class TotodileAPI < Sinatra::Base
     JSON.pretty_generate(data: Account.find(uid: params[:uid]))
   end
 
-
   post '/api/v1/accounts/?' do
     post_data = request.body.read
     # puts 'api get post_data' + post_data
