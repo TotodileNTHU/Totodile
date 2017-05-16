@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'econfig'
 require 'sinatra'
 require 'json'
 
@@ -6,7 +7,8 @@ require_relative '../config/environment'
 
 # Totodile web service
 class TotodileAPI < Sinatra::Base
-
+  extend Econfig::Shortcut
+  
   def secure_request?
     request.scheme.casecmp(settings.config.SECURE_SCHEME).zero?
   end
