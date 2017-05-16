@@ -4,6 +4,7 @@ ruby '2.4.1'
 
 gem 'json'
 gem 'puma'
+gem 'rack-ssl-enforcer'
 gem 'rbnacl-libsodium'
 gem 'sinatra'
 
