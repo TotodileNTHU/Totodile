@@ -7,6 +7,8 @@ require 'rbnacl/libsodium'
 
 # Represents a Account's stored information
 class Account < Sequel::Model
+  set_allowed_columns :uid, :name, :email
+
   one_to_many :postings
 
   def password=(new_password)

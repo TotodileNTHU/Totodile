@@ -44,15 +44,14 @@ class TotodileAPI < Sinatra::Base
   end
 
   post '/api/v1/postings' do
-    post_data = JSON.parse(request.body.read)
-    result = CreatePosting.call(post_data)
+    post_data = JSON.parse(request.body.read, symbolize_names: true)
 
-    if result.success?
+    result = CreatePosting.call(post_data)
+    if !result.nil?
       content_type 'application/json'
-      result.value.to_json
+      result.to_json
     else
-      ErrorRepresenter.new(result.value).to_status_response
-    end
+      status 400
+      end
   end
-  
 end

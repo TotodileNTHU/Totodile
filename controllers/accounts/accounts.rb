@@ -16,16 +16,19 @@ class TotodileAPI < Sinatra::Base
   end
 
   post '/api/v1/accounts/?' do
-    post_data = request.body.read
-    # puts 'api get post_data' + post_data
-    result = CreateAccount.call(post_data)
-
-    if result.success?
-      content_type 'application/json'
-      result.value.to_json
-    else
-      ErrorRepresenter.new(result.value).to_status_response
+    begin
+      json_str = request.body.read
+      registration_info = JSON.parse(json_str, symbolize_names: true)
+      new_account = CreateAccount.call(registration_info)
+    rescue => e
+      logger.info "FAILED to create new account: #{e.inspect}"
+      halt 400
     end
+
+    new_location = URI.join(@request_url.to_s + '/', new_account.name).to_s
+
+    status 201
+    headers('Location' => new_location)
   end
 
 end

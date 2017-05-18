@@ -4,8 +4,8 @@ require_relative 'spec_helper'
 describe 'Delete all database' do
   describe 'Clean the account and posting table' do
   	before do
-      DB[:accounts].delete
-      DB[:postings].delete
+      Account.dataset.destroy
+      Posting.dataset.destroy
     end
 
     it 'HAPPY: database should be empty' do
