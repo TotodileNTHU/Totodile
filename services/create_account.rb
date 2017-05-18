@@ -16,7 +16,7 @@ class CreateAccount
   register :validate_request_json, lambda {|request_body|
     begin
       json_data = JSON.parse(request_body)
-      data = {uid: json_data['uid'], name: json_data['name'], email: json_data['email'], password: json_data['password']}
+      data = {uid: json_data['uid'], username: json_data['username'], email: json_data['email'], password: json_data['password']}
       Right(data)
     rescue
       Left(Error.new('Wrong input account data'))

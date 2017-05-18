@@ -44,15 +44,19 @@ class TotodileAPI < Sinatra::Base
   end
 
   post '/api/v1/postings' do
-    post_data = JSON.parse(request.body.read)
-    result = CreatePosting.call(post_data)
+    begin
+      new_data = JSON.parse(request.body.read)
+      result = CreatePosting.call(new_data)
 
-    if result.success?
-      content_type 'application/json'
-      result.value.to_json
-    else
-      ErrorRepresenter.new(result.value).to_status_response
+    rescue => e
+      error_msg = "FAILED to create new config: #{e.inspect}"
+      logger.info error_msg
+      halt 400, error_msg
     end
-  end
-  
+
+    status 201
+    headers('Location' => [@request_url.to_s, saved_config.id].join('/'))
+
+    end
+
 end

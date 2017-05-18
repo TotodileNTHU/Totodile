@@ -1,4 +1,9 @@
 # frozen_string_literal: true
+require 'json'
+require 'base64'
+require 'sequel'
+
+require_relative '../lib/secure_db'
 
 # Represents a Posting's stored information
 class Posting < Sequel::Model

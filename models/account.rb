@@ -7,7 +7,15 @@ require 'rbnacl/libsodium'
 
 # Represents a Account's stored information
 class Account < Sequel::Model
+  set_allowed_columns :username, :email
   one_to_many :postings
+
+  def password=(new_password)
+    new_salt = SecureDB.new_salt
+    hashed = SecureDB.hash_password(new_salt, new_password)
+    self.salt = new_salt
+    self.password_hash = hashed
+  end
 
   def password=(new_password)
     new_salt = SecureDB.new_salt
@@ -25,7 +33,7 @@ class Account < Sequel::Model
     JSON({ type: 'account',
            uid: uid,
            email: email,
-           name: name},
+           username: username},
          options)
   end
 end

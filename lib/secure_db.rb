@@ -13,6 +13,11 @@ class SecureDB < Sinatra::Base
     Base64.strict_encode64 key
   end
 
+  # Call setup once to pass in config variable with DB_KEY attribute
+  def self.setup(config)
+    @config = config
+  end
+
   def self.key
     @key ||= Base64.strict_decode64(SecureDB.config.DB_KEY)
   end
