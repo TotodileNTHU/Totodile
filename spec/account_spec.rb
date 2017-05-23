@@ -2,14 +2,15 @@ require_relative './spec_helper'
 
 describe 'Testing unit level properties of accounts' do
   before do
+
+    Posting.dataset.destroy
     Account.dataset.destroy
 
     @original_password = 'mypassword'
-    j = {uid: 'asdf',
-         name: 'soumya.ray',
-         email: 'sray@nthu.edu.tw',
-         password: @original_password}
-    @account = CreateAccount.call(j)
+    @account = CreateAccount.call(
+      name: 'soumya.ray',
+      email: 'sray@nthu.edu.tw',
+      password: @original_password)
   end
 
   it 'HAPPY: should hash the password' do
@@ -26,16 +27,16 @@ end
 
 describe 'Testing Account resource routes' do
   before do
+    Posting.dataset.destroy
     Account.dataset.destroy
   end
 
   describe 'Creating new account' do
     before do
       registration_data = {
-          uid: 'asdadas',
-          name: 'test.name',
-          password: 'mypass',
-          email: 'test@email.com' }
+        name: 'test.name',
+        password: 'mypass',
+        email: 'test@email.com' }
       @req_body = registration_data.to_json
     end
 
@@ -55,34 +56,29 @@ describe 'Testing Account resource routes' do
     end
   end
 
-  it 'HAPPY: should create a new account' do
-    post '/api/v1/accounts',
-         {uid: HAPPY_ACCOUNT_UID1, name: HAPPY_ACCOUNT_NAME1, email: HAPPY_EMAIL, password: HAPPY_PASSWORD}.to_json,
-         'CONTENT_TYPE' => 'application/json'
 
-    last_response.status.must_equal 201
-    Account.count.must_be :>, 0
+  describe 'Finding an existing account' do
+    before do
+      @new_account = CreateAccount.call(
+        name: 'test.name',
+        email: 'test@email.com', password: 'mypassword')
+        end
+    end
 
-    # puts '# Authenticate account just created'
-    post '/api/v1/accounts/authenticate',
-         {uid: HAPPY_ACCOUNT_UID1, password: HAPPY_PASSWORD}.to_json,
-         'CONTENT_TYPE' => 'application/json'
+    it 'HAPPY: should find an existing account' do
+      get "/api/v1/accounts/#{@new_account.id}"
+      _(last_response.status).must_equal 200
 
-    last_response.status.must_equal 200
-  end
+      results = JSON.parse(last_response.body)
+      _(results['data']['id']).must_equal @new_account.id
+      3.times do |i|
+        _(results['relationships'][i]['id']).must_equal @new_projects[i].id
+      end
+    end
 
-  it 'HAPPY: should get an existed account' do
-    post '/api/v1/accounts',
-         {uid: HAPPY_ACCOUNT_UID2, name: HAPPY_ACCOUNT_NAME2, password: HAPPY_PASSWORD}.to_json,
-         'CONTENT_TYPE' => 'application/json'
-
-    get '/api/v1/accounts/' + HAPPY_ACCOUNT_UID2
-
-    last_response.status.must_equal 200
-    result = JSON.parse last_response.body
-    result['data']['name'].must_equal HAPPY_ACCOUNT_NAME2
+    it 'SAD: should not return wrong account' do
+      get "/api/v1/accounts/#{random_str(10)}"
+      _(last_response.status).must_equal 401
+    end
   end
 end
-
-
-
