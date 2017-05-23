@@ -5,11 +5,13 @@ Sequel.migration do
   change do
     create_table(:postings) do
       primary_key :id
-      foreign_key :account_id
-      
+      foreign_key :owner_id, :accounts
+
       String :uid
       String :content
-      Time :created_time
+      
+      DateTime :created_at
+      DateTime :updated_at
     end
   end
 end

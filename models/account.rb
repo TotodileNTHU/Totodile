@@ -9,7 +9,7 @@ require 'rbnacl/libsodium'
 class Account < Sequel::Model
   set_allowed_columns :uid, :name, :email
 
-  one_to_many :postings
+  one_to_many :owned_postings, class: :Posting,key: :owner_id
 
   def password=(new_password)
     new_salt = SecureDB.new_salt

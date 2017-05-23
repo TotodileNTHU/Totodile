@@ -1,21 +1,15 @@
 require 'econfig'
 require 'base64'
 require 'rbnacl/libsodium'
+require_relative 'securable'
 
 class SecureDB < Sinatra::Base
+
+  #inculde method:generate_key,setup,key,base_encrypt,base_decrypt
+  extend Securable
   extend Econfig::Shortcut
   Econfig.env = settings.environment.to_s
   Econfig.root = File.expand_path('..', settings.root)
-
-  # Generate key for Rake tasks (typically not called at runtime)
-  def self.generate_key
-    key = RbNaCl::Random.random_bytes(RbNaCl::SecretBox.key_bytes)
-    Base64.strict_encode64 key
-  end
-
-  def self.key
-    @key ||= Base64.strict_decode64(SecureDB.config.DB_KEY)
-  end
 
   # Encrypt or else return nil if data is nil
   def self.encrypt(plaintext)

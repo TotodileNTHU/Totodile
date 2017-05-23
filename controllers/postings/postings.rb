@@ -11,9 +11,37 @@ class TotodileAPI < Sinatra::Base
   # '/api/v1/postings?uid=john8787'
   # '/api/v1/postings?id=1'
 
+  #what is env ?? 
+  def authorized_affiliated_posting(env, posting_id)
+    account = authenticated_account(env)
+    all_postings = FindAllAccountPostings.call(id: account['id'])
+    all_postings.select { |post| post.id == posting_id.to_i }.first
+  rescue => e
+    logger.error "ERROR finding posting: #{e.inspect}"
+    nil
+  end
+
   key = [SecureDB.config.DB_KEY].pack('H*')
   box = RbNaCl::SimpleBox.from_secret_key(key)
 
+
+  # Get particular posting for an account
+  get '/api/v1/posting/:id' do
+    content_type 'application/json'
+
+    posting_id = params[:id]
+    posting = authorized_affiliated_posting(env, posting_id)
+
+    if posting
+      posting.to_full_json
+    else
+      error_msg = "POSTING NOT FOUND: \"#{posting_id}\""
+      logger.info error_msg
+      halt 401, error_msg
+    end
+  end
+
+  #get all postings
   get '/api/v1/postings/?' do
     content_type 'application/json'
 

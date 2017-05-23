@@ -62,6 +62,12 @@ describe 'Testing Account resource routes' do
       @new_account = CreateAccount.call(
         name: 'test.name',
         email: 'test@email.com', password: 'mypassword')
+        @new_postings = (1..3).map do |i|
+
+          # method of add_owned_posting is created by sequel,
+          # when we declare account has one_to_many relationshop with owned_posting in models/account.rb
+          # owned_posting is naming, its class is Posting
+          @new_account.add_owned_posting(name: "Posting #{i}")
         end
     end
 
