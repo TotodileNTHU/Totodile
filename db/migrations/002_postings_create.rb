@@ -9,7 +9,7 @@ Sequel.migration do
 
       String :uid
       String :content
-      
+
       DateTime :created_at
       DateTime :updated_at
     end

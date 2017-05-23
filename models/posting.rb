@@ -8,7 +8,7 @@ class Posting < Sequel::Model
   set_allowed_columns :content,:uid,:created_time,:account_id
 
   plugin :timestamps, update_on_create: true
-  
+
   def to_json(options = {})
     JSON({ type: 'posting',
            id: id,
