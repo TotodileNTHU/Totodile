@@ -1,13 +1,13 @@
 ---
 - :uid: fb_uid_1
-  :username: cory
+  :name: cory
   :email: 'cory@gmail.com'
   :password: '1234'
 - :uid: fb_uid_2
-  :username: leo
+  :name: leo
   :email: 'leo@gmail.com'
   :password: '1234'
 - :uid: fb_uid_3
-  :username: frank
+  :name: frank
   :email: 'frank@gmail.com'
   :password: '1234'

@@ -6,7 +6,7 @@ Sequel.migration do
     create_table(:accounts) do
       primary_key :id
 
-      String :username, null: false, unique: true
+      String :name, null: false, unique: true
       String :email, null: false, unique: true
       String :password_hash, text: true, null: false
       String :salt, null: false

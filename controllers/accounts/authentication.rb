@@ -9,7 +9,7 @@ class TotodileAPI < Sinatra::Base
       account = AuthenticateAccount.call(credentials)
     rescue => e
       halt 500
-      logger.info "Cannot authenticate #{credentials['username']}: #{e}"
+      logger.info "Cannot authenticate #{credentials['name']}: #{e}"
     end
 
     account ? { account: account }.to_json : status(403)
