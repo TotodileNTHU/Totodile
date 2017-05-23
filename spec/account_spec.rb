@@ -62,13 +62,13 @@ describe 'Testing Account resource routes' do
       @new_account = CreateAccount.call(
         name: 'test.name',
         email: 'test@email.com', password: 'mypassword')
-        @new_postings = (1..3).map do |i|
+      @new_postings = (1..3).map do |i|
 
-          # method of add_owned_posting is created by sequel,
-          # when we declare account has one_to_many relationshop with owned_posting in models/account.rb
-          # owned_posting is naming, its class is Posting
-          @new_account.add_owned_posting(name: "Posting #{i}")
-        end
+        # method of add_owned_posting is created by sequel,
+        # when we declare account has one_to_many relationshop with owned_posting in models/account.rb
+        # owned_posting is naming, its class is Posting
+        @new_account.add_owned_posting(content: "this is content of posting #{i}")
+      end
     end
 
     it 'HAPPY: should find an existing account' do
@@ -78,7 +78,7 @@ describe 'Testing Account resource routes' do
       results = JSON.parse(last_response.body)
       _(results['data']['id']).must_equal @new_account.id
       3.times do |i|
-        _(results['relationships'][i]['id']).must_equal @new_projects[i].id
+        _(results['relationships'][i]['id']).must_equal @new_postings[i].id
       end
     end
 

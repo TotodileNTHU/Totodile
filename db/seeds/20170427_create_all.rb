@@ -1,5 +1,5 @@
 Sequel.seed(:development) do
-  def run 
+  def run
     puts 'Seeding accounts, postings'
     create_accounts
     create_postings
@@ -13,16 +13,17 @@ ALL_POSTINGS_INFO = YAML.load_file("#{DIR}/postings_seed.yaml")
 
 def create_accounts
   ALL_ACCOUNTS_INFO.each do |account_info|
-  	CreateAccount.call(account_info.to_json)
+  	CreateAccount.call(account_info)
   end
 end
 
 def create_postings
-  ALL_POSTINGS_INFO.each do |posting_info|
-  	data = {
-  	  uid: posting_info[:uid],
-      content: posting_info[:content]
-  	}.to_json
-  	CreatePosting.call(JSON.parse(data))
+  post_info_each = ALL_POSTINGS_INFO.each
+  accounts_cycle = Account.all.cycle
+  loop do
+    post_info = post_info_each.next
+    account = accounts_cycle.next
+    CreatePostingForOwner.call(owner_id: account.id, content: post_info[:content],
+                               uid: post_info[:uid])
   end
 end

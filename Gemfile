@@ -23,7 +23,8 @@ gem 'dry-transaction'
 
 group :development do
   gem 'rerun'
-
+  gem 'pry'
+  gem 'rerun'
   gem 'flog'
   gem 'flay'
 end
@@ -39,6 +40,7 @@ group :test do
 end
 
 group :development, :test do
+  gem 'rubocop'
   gem 'sqlite3'
 end
 
