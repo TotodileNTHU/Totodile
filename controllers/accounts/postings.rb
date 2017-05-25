@@ -23,8 +23,8 @@ class TotodileAPI < Sinatra::Base
       new_posting_data = JSON.parse(request.body.read)
       saved_posting = CreatePostingForOwner.call(
         owner_id: params[:id],
-        name: new_posting_data['name'],
-        repo_url: new_posting_data['repo_url']
+        uid: new_posting_data['uid'],
+        content: new_posting_data['content']
       )
       new_location = URI.join(@request_url.to_s + '/',
                               saved_posting.id.to_s).to_s

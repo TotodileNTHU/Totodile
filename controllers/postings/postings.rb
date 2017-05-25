@@ -26,7 +26,7 @@ class TotodileAPI < Sinatra::Base
 
 
   # Get particular posting for an account
-  get '/api/v1/posting/:id' do
+  get '/api/v1/postings/:id' do
     content_type 'application/json'
 
     posting_id = params[:id]

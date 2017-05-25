@@ -3,22 +3,24 @@ require 'sinatra'
 require 'json'
 
 class TotodileAPI < Sinatra::Base
-  # list all account
-  get '/api/v1/accounts/?' do
-    content_type 'application/json'
-    JSON.pretty_generate(data: Account.all)
-  end
-
   # get account by id
-  get '/api/v1/accounts/:uid' do
+  get '/api/v1/accounts/:id' do
     content_type 'application/json'
-    JSON.pretty_generate(data: Account.find(uid: params[:uid]))
+
+    id = params[:id]
+    account = Account.where(id: id).first
+
+    if account
+      postings = account.owned_postings
+      JSON.pretty_generate(data: account, relationships: postings)
+    else
+      halt 401, "ACCOUNT NOT VALID: #{id}"
+    end
   end
 
   post '/api/v1/accounts/?' do
     begin
-      json_str = request.body.read
-      registration_info = JSON.parse(json_str, symbolize_names: true)
+      registration_info = JsonRequestBody.parse_symbolize(request.body.read)
       new_account = CreateAccount.call(registration_info)
     rescue => e
       logger.info "FAILED to create new account: #{e.inspect}"
