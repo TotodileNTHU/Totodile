@@ -33,7 +33,7 @@ class TotodileAPI < Sinatra::Base
     posting = authorized_affiliated_posting(env, posting_id)
 
     if posting
-      posting.to_full_json
+      posting.to_json
     else
       error_msg = "POSTING NOT FOUND: \"#{posting_id}\""
       logger.info error_msg
