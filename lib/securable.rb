@@ -8,7 +8,7 @@ module Securable
   # Generate key for Rake tasks (typically not called at runtime)
   def generate_key
     key = RbNaCl::Random.random_bytes(RbNaCl::SecretBox.key_bytes)
-    Base64.strict_encode64 key
+    Base64.strict_encode64(key)
   end
 
   # Call setup once to pass in config variable with DB_KEY attribute
@@ -22,7 +22,7 @@ module Securable
 
   # Encrypt with no checks
   def base_encrypt(plaintext)
-    simple_box = RbNaCl::SimpleBox.from_secret_key(key)
+    simple_box = RbNaCl::SimpleBox.from_secret_key(key) #here, key is method not variable
     simple_box.encrypt(plaintext)
   end
 

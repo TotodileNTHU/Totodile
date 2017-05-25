@@ -4,8 +4,6 @@ require 'rbnacl/libsodium'
 require_relative 'securable'
 
 class SecureDB < Sinatra::Base
-
-  #inculde method:generate_key,setup,key,base_encrypt,base_decrypt
   extend Securable
   extend Econfig::Shortcut
   Econfig.env = settings.environment.to_s
@@ -14,8 +12,9 @@ class SecureDB < Sinatra::Base
   # Encrypt or else return nil if data is nil
   def self.encrypt(plaintext)
     return nil unless plaintext
-    simple_box = RbNaCl::SimpleBox.from_secret_key(key)
-    ciphertext = simple_box.encrypt(plaintext)
+    #simple_box = RbNaCl::SimpleBox.from_secret_key(key)
+    #ciphertext = simple_box.encrypt(plaintext)
+    ciphertext = base_encrypt(plaintext)
     Base64.strict_encode64(ciphertext)
   end
 
@@ -23,8 +22,9 @@ class SecureDB < Sinatra::Base
   def self.decrypt(ciphertext64)
     return nil unless ciphertext64
     ciphertext = Base64.strict_decode64(ciphertext64)
-    simple_box = RbNaCl::SimpleBox.from_secret_key(key)
-    simple_box.decrypt(ciphertext)
+    #simple_box = RbNaCl::SimpleBox.from_secret_key(key)
+    #simple_box.decrypt(ciphertext)
+    base_decrypt(ciphertext)
   end
 
   def self.new_salt
