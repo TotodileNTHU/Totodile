@@ -35,7 +35,7 @@ Develop:
 Run this API during development:
 
     $ rake db:migrate
-    $ bundle exec rackup
+    $ bundle exec rackup -p 3000
 
 or use autoloading during development:
 
