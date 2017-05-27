@@ -54,6 +54,7 @@ describe 'Testing Posting resource routes' do
                                       password: 'mypassword')
 
       auth_headers = { 'HTTP_AUTHORIZATION' => "Bearer #{auth[:auth_token]}" }
+      get "/api/v1/postings/7", nil, auth_headers
       get "/api/v1/postings/#{new_posting.id}", nil, auth_headers
       _(last_response.status).must_equal 200
 
@@ -100,7 +101,11 @@ describe 'Testing Posting resource routes' do
       posts = JSON.parse(result.body)
 
       valid_ids = @my_posts.map(&:id)
-      _(posts['data'].count).must_equal 5
+
+      #code of teacher is 5 rather than 3,
+      #it is because 3 owned projects + 2 collaborate projects
+      #however,now we only has owned posings, and there is no collaborate posintg
+      _(posts['data'].count).must_equal 3
       posts['data'].each do |post|
         _(valid_ids).must_include post['id']
       end

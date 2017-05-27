@@ -1,4 +1,5 @@
 # Service object to create new accounts using all columns
+require 'sequel'
 class CreateAccount
   def self.call(registration)
     account = Account.new(

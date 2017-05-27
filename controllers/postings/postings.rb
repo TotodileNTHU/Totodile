@@ -11,8 +11,8 @@ class TotodileAPI < Sinatra::Base
   # '/api/v1/postings?uid=john8787'
   # '/api/v1/postings?id=1'
 
-  #what is env ??
   def authorized_affiliated_posting(env, posting_id)
+    #env is parameters of HTTP 
     account = authenticated_account(env)
     all_postings = FindAllAccountPostings.call(id: account['id'])
     all_postings.select { |post| post.id == posting_id.to_i }.first
