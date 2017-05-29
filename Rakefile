@@ -44,9 +44,9 @@ namespace :db do
 
   task :reset_seeds do
     puts '******* reset_seeds *******'
-  #  tables = [:accounts, :postings]
-  #  tables.each { |table| DB[table].delete }
-    DB[:schema_seeds].delete
+    tables = [:accounts, :postings]
+    tables.each { |table| DB[table].delete }
+  #  DB[:schema_seeds].delete
     Account.dataset.destroy
   end
 
