@@ -24,7 +24,7 @@ class TotodileAPI < Sinatra::Base
       new_account = CreateAccount.call(registration_info)
     rescue => e
       logger.info "FAILED to create new account: #{e.inspect}"
-      halt 400
+      halt 400, "FAILED to create new account: #{e.inspect}"
     end
 
     new_location = URI.join(@request_url.to_s + '/', new_account.name).to_s
