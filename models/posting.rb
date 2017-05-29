@@ -9,6 +9,16 @@ class Posting < Sequel::Model
 
   plugin :timestamps, update_on_create: true
 
+  def full_details
+    { type: 'posting',
+      id: id,
+      attributes: {
+        uid: uid,
+        content: content
+      },
+      relationships: relationships }
+  end
+
   def to_json(options = {})
     JSON({ type: 'posting',
            id: id,
@@ -22,4 +32,13 @@ class Posting < Sequel::Model
          },
         options)
   end
+
+  private
+
+  def relationships
+    {
+      owner: owner
+    }
+  end
+
 end

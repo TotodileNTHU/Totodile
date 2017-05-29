@@ -11,32 +11,40 @@ class TotodileAPI < Sinatra::Base
   # '/api/v1/postings?uid=john8787'
   # '/api/v1/postings?id=1'
 
-  def authorized_affiliated_posting(env, posting_id)
-    #env is parameters of HTTP 
-    account = authenticated_account(env)
-    all_postings = FindAllAccountPostings.call(id: account['id'])
-    all_postings.select { |post| post.id == posting_id.to_i }.first
-  rescue => e
-    logger.error "ERROR finding posting: #{e.inspect}"
-    nil
+  # Get  all postings
+  #to-do: write test of this route
+  get '/api/v1/postings/?' do
+    content_type 'application/json'
+
+    begin
+      requesting_account = authenticated_account(env)
+
+      viewable_postings =
+        PostingPolicy::Scope.new(requesting_account).viewable
+      JSON.pretty_generate(data: viewable_postings)
+    rescue
+      error_msg = "FAILED to find all postings for user: #{requesting_account.id}"
+      logger.info error_msg
+      halt 404, error_msg
+    end
   end
-
-  #key = [SecureDB.config.DB_KEY].pack('H*')
-  #box = RbNaCl::SimpleBox.from_secret_key(key)
-
 
   # Get particular posting for an account
   get '/api/v1/postings/:id' do
     content_type 'application/json'
 
-    posting_id = params[:id]
-    posting = authorized_affiliated_posting(env, posting_id)
+    begin
+      account = authenticated_account(env)
+      posting = Posting[params[:id]]
 
-    if posting
-      posting.to_json
-    else
-      error_msg = "POSTING NOT FOUND: \"#{posting_id}\""
-      logger.info error_msg
+      check_policy = PostingPolicy.new(account, posting)
+      raise unless check_policy.can_view_posting?
+      posting.full_details
+             .merge(policies: check_policy.summary)
+             .to_json
+    rescue => e
+      error_msg = "POSTING NOT FOUND: \"#{params[:id]}\""
+      logger.error e.inspect
       halt 401, error_msg
     end
   end

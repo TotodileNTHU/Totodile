@@ -3,17 +3,20 @@ require 'sinatra'
 # /api/v1/postings routes only
 class TotodileAPI < Sinatra::Base
   # Get all postings for an account
-  get '/api/v1/accounts/:id/postings/?' do
+  get '/api/v1/accounts/:account_id/postings/?' do
     content_type 'application/json'
 
     begin
-      id = params[:id]
-      halt 401 unless authorized_account?(env, id)
-      all_postings = FindAllAccountPostings.call(id: id)
-      JSON.pretty_generate(data: all_postings)
-    rescue => e
-      logger.info "FAILED to find postings for user: #{e}"
-      halt 404
+      requesting_account = authenticated_account(env)
+      target_account = Account[params[:account_id]]
+
+      viewable_postings =
+        PostingPolicy::Scope.new(requesting_account, target_account).viewable
+      JSON.pretty_generate(data: viewable_postings)
+    rescue
+      error_msg = "FAILED to find posting for user: #{params[:account_id]}"
+      logger.info error_msg
+      halt 404, error_msg
     end
   end
 
