@@ -23,6 +23,7 @@ class TotodileAPI < Sinatra::Base
       registration_info = JsonRequestBody.parse_symbolize(request.body.read)
       new_account = CreateAccount.call(registration_info)
     rescue => e
+      print "FAILED to create new account: #{e.inspect}"
       logger.info "FAILED to create new account: #{e.inspect}"
       halt 400, "FAILED to create new account: #{e.inspect}"
     end
