@@ -16,7 +16,7 @@ class PostingPolicy
   end
 
   def can_delete_posting?
-    account_is_owner?
+    false
   end
 
   def summary
