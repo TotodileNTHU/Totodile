@@ -22,7 +22,7 @@ def create_postings
   accounts_cycle = Account.all.cycle
   loop do
     post_info = post_info_each.next
-    account = accounts_cycle.next
+    account = Account.find(uid: post_info[:uid])
     CreatePostingForOwner.call(owner_id: account.id, content: post_info[:content],
                                uid: post_info[:uid])
   end
