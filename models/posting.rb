@@ -5,7 +5,7 @@ require 'sequel'
 # Represents a Posting's stored information
 class Posting < Sequel::Model
   many_to_one :owner, class: :Account
-  set_allowed_columns :content,:uid,:created_time,:account_id
+  set_allowed_columns :content,:uid,:created_at,:account_id
 
   plugin :timestamps, update_on_create: true
 
@@ -14,7 +14,8 @@ class Posting < Sequel::Model
       id: id,
       attributes: {
         uid: uid,
-        content: content
+        content: content,
+        created_at: created_at
       },
       relationships: relationships }
   end
@@ -24,7 +25,8 @@ class Posting < Sequel::Model
            id: id,
            attributes: {
              uid: uid,
-             content: content
+             content: content,
+             created_at: created_at
            },
            relationships: {
               owner: owner

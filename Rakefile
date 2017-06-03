@@ -6,9 +6,9 @@ puts "Environment: #{ENV['RACK_ENV'] || 'development'}"
 
 task default: [:spec]
 
-#task :run do
-#  sh 'rerun "rackup -p 3000"'
-#end
+task :run do
+ sh 'rerun "rackup -p 3000"'
+end
 
 #task :default do
 #  puts `rake -T`

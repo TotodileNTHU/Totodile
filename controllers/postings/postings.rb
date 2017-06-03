@@ -18,7 +18,6 @@ class TotodileAPI < Sinatra::Base
 
     begin
       requesting_account = authenticated_account(env)
-
       viewable_postings =
         PostingPolicy::Scope.new(requesting_account).viewable
       JSON.pretty_generate(data: viewable_postings)
