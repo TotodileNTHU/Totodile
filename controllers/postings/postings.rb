@@ -17,15 +17,12 @@ class TotodileAPI < Sinatra::Base
     content_type 'application/json'
 
     begin
-      puts '123'
       requesting_account = authenticated_account(env)
       target_account = Account[params[:account_id]]
-      puts target_account
       viewable_postings =
         PostingPolicy::Scope.new(requesting_account, target_account).viewable
       JSON.pretty_generate(data: viewable_postings)
     rescue
-      puts '32123123'
       error_msg = "FAILED to find all postings for user: #{requesting_account.id}"
       logger.info error_msg
       halt 404, error_msg
