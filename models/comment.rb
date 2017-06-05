@@ -4,7 +4,8 @@ require 'sequel'
 
 # Represents a Posting's stored information
 class Comment < Sequel::Model
-  many_to_one :owner, class: :Posting   #owner here means the posting which has this comment
+
+  many_to_one :posting
 
   plugin :timestamps, update_on_create: true
 
@@ -28,7 +29,7 @@ class Comment < Sequel::Model
              created_at: created_at
            },
            relationships: {
-              owner: owner
+              posting: posting
            }
          },
         options)
@@ -38,7 +39,7 @@ class Comment < Sequel::Model
 
   def relationships
     {
-      owner: owner
+      posting: posting
     }
   end
 

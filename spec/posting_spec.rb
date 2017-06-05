@@ -1,4 +1,4 @@
-require_relative 'spec_helper'
+require_relative './spec_helper'
 
 describe 'Testing Posting resource routes' do
   before do
