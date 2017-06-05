@@ -4,9 +4,9 @@
 class CommentPolicy
 
   class Scope
-    
+
     def initialize(current_account,target_posting)
-      @scope = target_posting.owned_comments
+      @scope = target_posting.comments
     end
 
     def viewable
