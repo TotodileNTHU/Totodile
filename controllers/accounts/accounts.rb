@@ -17,7 +17,7 @@ class TotodileAPI < Sinatra::Base
       halt 401, "ACCOUNT NOT VALID: #{id}"
     end
   end
-
+  #create account
   post '/api/v1/accounts/?' do
     begin
       registration_info = JsonRequestBody.parse_symbolize(request.body.read)
