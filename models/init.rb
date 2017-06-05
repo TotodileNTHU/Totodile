@@ -4,3 +4,4 @@ require 'sequel'
 
 require_relative 'account'
 require_relative 'posting'
+require_relative 'comment'
