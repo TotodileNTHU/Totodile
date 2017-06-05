@@ -22,14 +22,12 @@ class TotodileAPI < Sinatra::Base
   end
 
   # Make a new comment
-  post '/api/v1/postings/:posting_id/owned_comments/?' do
+  post '/api/v1/accounts/:account_id/postings/:posting_id/owned_comments/?' do
     begin
-      account = authenticated_account(env)
-
       new_comment_data = JSON.parse(request.body.read)
       saved_comment= CreateCommentForOwner.call(
         owner_id: params[:posting_id],
-        commenter: account.id, # todo: test
+        commenter: params[:account_id], 
         content: new_comment_data['content']
       )
       new_location = URI.join(@request_url.to_s + '/',
