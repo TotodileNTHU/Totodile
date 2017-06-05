@@ -5,9 +5,9 @@ Sequel.migration do
   change do
     create_table(:comments) do
       primary_key :id
-      foreign_key :owner_id, :postings
+      foreign_key :posting_id, :postings
 
-      String :commenter
+      String :commenter_id
       String :content
 
       DateTime :created_at

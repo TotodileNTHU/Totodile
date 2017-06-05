@@ -13,7 +13,7 @@ class Comment < Sequel::Model
     { type: 'comment',
       id: id,
       attributes: {
-        commenter: commenter,
+        commenter: commenter_id,
         content: content,
         created_at: created_at
       },
@@ -24,7 +24,7 @@ class Comment < Sequel::Model
     JSON({ type: 'comment',
            id: id,
            attributes: {
-             commenter: commenter,
+             commenter: commenter_id,
              content: content,
              created_at: created_at
            },

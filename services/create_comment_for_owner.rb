@@ -1,9 +1,9 @@
 # Service object to create a new posting for an owner
 class CreateCommentForOwner
-  def self.call(owner_id:, content:, commenter:)
-    owner = Posting[owner_id]    # here,owner is posting which has this comment
-    saved_comment = owner.add_owned_comment(content: content, commenter:commenter)
-    saved_comment.commenter = commenter
+  def self.call(posting_id:, content:, commenter_id:)
+    posting = Posting[posting_id]    # here,owner is posting which has this comment
+    saved_comment = posting.add_comment(content: content, commenter_id:commenter_id)
+    saved_comment.commenter_id = commenter_id
     saved_comment.save
   end
 end

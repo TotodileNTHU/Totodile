@@ -20,8 +20,7 @@ describe 'Testing Comment resource routes' do
 
       req_header = { 'CONTENT_TYPE' => 'application/json' }
       req_body = { content: 'Demo Comment Content'}.to_json
-      post "/api/v1/accounts/#{@new_account.id}/postings/#{existing_posting.id}/comments",
-           req_body, req_header
+      post "/api/v1/accounts/#{@new_account.id}/postings/#{existing_posting.id}/comments",req_body,req_header
       _(last_response.status).must_equal 201
       _(last_response.location).must_match(%r{http://})
     end
@@ -41,7 +40,7 @@ describe 'Testing Comment resource routes' do
     it 'HAPPY: should find existing comment' do
       posting = Posting.create(content: 'Demo Posting Content')
 
-      comment = posting.add_owned_comment(content: 'Demo Comment Content')
+      comment = posting.add_comment(content: 'Demo Comment Content')
       get "/api/v1/postings/#{posting.id}/comments/#{comment.id}"
       _(last_response.status).must_equal 200
       parsed_comment = JSON.parse(last_response.body)['data']['comment']

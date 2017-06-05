@@ -4,7 +4,7 @@
 class CommentRepresenter < Roar::Decorator
   include Roar::JSON
 
-  property :commenter
+  property :commenter_id
   property :content
   property :created_time
 end

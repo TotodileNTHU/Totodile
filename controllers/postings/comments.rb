@@ -10,9 +10,8 @@ class TotodileAPI < Sinatra::Base
     begin
       comment = Comment.where( id: params[:id]).first
       halt(404, 'Comment not found') unless comment
-      JSON.pretty_generate(data: {
-                             comment: comment
-                           })
+      JSON.pretty_generate(data: {comment: comment})
+
     rescue => e
       error_msg = "FAILED to process GET comment request: #{e.inspect}"
       logger.info error_msg
@@ -43,8 +42,8 @@ class TotodileAPI < Sinatra::Base
     begin
       new_comment_data = JSON.parse(request.body.read)
       saved_comment= CreateCommentForOwner.call(
-        owner_id: params[:posting_id],
-        commenter: params[:account_id],
+        posting_id: params[:posting_id],  #??
+        commenter_id: params[:account_id],
         content: new_comment_data['content']
       )
       new_location = URI.join(@request_url.to_s + '/',
