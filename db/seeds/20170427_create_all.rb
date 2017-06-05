@@ -28,16 +28,18 @@ def create_postings
     CreatePostingForOwner.call(owner_id: account.id, content: post_info[:content],
                                uid: post_info[:uid])
   end
+end
 
-  def create_comments
-    comment_info_each = ALL_COMMENTS_INFO.each
-
-    loop do
-      comment_info= comment_info_each.next
-      postings = Posting.all
-      postings.each do |posting|
-        CreateCommentForOwner.call(commenter_id: postings.owner_id, content: comment_info[:content],
-                                   posting_id: posting.id)
-      end
+def create_comments
+  comment_info_each = ALL_COMMENTS_INFO.each
+  loop do
+    comment_info = comment_info_each.next
+    postings = Posting.all
+    postings.each do |posting|
+      puts posting
+      puts posting.owner
+      CreateCommentForOwner.call(commenter_id: posting.owner.id, content: comment_info[:content],
+                                 posting_id: posting.id)
     end
+  end
 end
