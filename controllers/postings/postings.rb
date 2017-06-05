@@ -15,7 +15,7 @@ class TotodileAPI < Sinatra::Base
   #to-do: write test of this route
   get '/api/v1/account_postings/:account_id' do
     content_type 'application/json'
-    
+
     begin
       puts '123'
       requesting_account = authenticated_account(env)
@@ -67,6 +67,6 @@ class TotodileAPI < Sinatra::Base
     end
   end
 
-  
+
 
 end

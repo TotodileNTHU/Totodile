@@ -14,10 +14,10 @@ class TotodileAPI < Sinatra::Base
       viewable_comments =
         CommentPolicy::Scope.new(requesting_account, target_posting).viewable
       JSON.pretty_generate(data: viewable_comments)
-    rescue
+    rescue => e
       error_msg = "FAILED to find comments for posting: #{params[:posting_id]}"
       logger.info error_msg
-      halt 404, error_msg
+      halt 404, error_msg, e.inspect
     end
   end
 
@@ -27,7 +27,7 @@ class TotodileAPI < Sinatra::Base
       new_comment_data = JSON.parse(request.body.read)
       saved_comment= CreateCommentForOwner.call(
         owner_id: params[:posting_id],
-        commenter: params[:account_id], 
+        commenter: params[:account_id],
         content: new_comment_data['content']
       )
       new_location = URI.join(@request_url.to_s + '/',
