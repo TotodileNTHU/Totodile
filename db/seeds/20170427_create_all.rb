@@ -3,6 +3,7 @@ Sequel.seed(:development) do
     puts 'Seeding accounts, postings'
     create_accounts
     create_postings
+    create_comments
   end
 end
 
@@ -10,6 +11,7 @@ require 'yaml'
 DIR = File.dirname(__FILE__)
 ALL_ACCOUNTS_INFO = YAML.load_file("#{DIR}/accounts_seed.yaml")
 ALL_POSTINGS_INFO = YAML.load_file("#{DIR}/postings_seed.yaml")
+ALL_COMMENTS_INFO = YAML.load_file("#{DIR}/comments_seed.yaml")
 
 def create_accounts
   ALL_ACCOUNTS_INFO.each do |account_info|
@@ -26,4 +28,16 @@ def create_postings
     CreatePostingForOwner.call(owner_id: account.id, content: post_info[:content],
                                uid: post_info[:uid])
   end
+
+  def create_comments
+    comment_info_each = ALL_COMMENTS_INFO.each
+
+    loop do
+      comment_info= comment_info_each.next
+      postings = Posting.all
+      postings.each do |posting|
+        CreateCommentForOwner.call(commenter_id: postings.owner_id, content: comment_info[:content],
+                                   posting_id: posting.id)
+      end
+    end
 end
