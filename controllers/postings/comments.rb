@@ -42,7 +42,7 @@ class TotodileAPI < Sinatra::Base
     begin
       new_comment_data = JSON.parse(request.body.read)
       saved_comment= CreateCommentForOwner.call(
-        posting_id: params[:posting_id],  #??
+        posting_id: params[:posting_id],
         commenter_id: params[:account_id],
         content: new_comment_data['content']
       )

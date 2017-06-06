@@ -8,6 +8,7 @@ Sequel.migration do
       foreign_key :posting_id, :postings
 
       String :commenter_id
+      String :commenter_name
       String :content
 
       DateTime :created_at
