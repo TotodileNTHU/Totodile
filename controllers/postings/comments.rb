@@ -39,10 +39,11 @@ class TotodileAPI < Sinatra::Base
           commenter_secret.push(name_pool.index(comment.commenter_name))
         end
       end
-      puts name_pool
-      puts commenter_secret
 
-
+      if name_pool.include?(target_posting.owner.name)
+        idx = name_pool.index(target_posting.owner.name)
+        commenter_secret = commenter_secret.map{|x| x == idx ? x.to_s+'(owner)' : x}
+      end
       
       JSON.pretty_generate(data: viewable_comments, commenter_secret: commenter_secret)
     rescue => e
