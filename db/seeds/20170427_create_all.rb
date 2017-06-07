@@ -38,7 +38,8 @@ def create_comments
     postings.each do |posting|
       puts posting
       puts posting.owner
-      CreateCommentForOwner.call(commenter_id: posting.owner.id, content: comment_info[:content],
+      CreateCommentForOwner.call(commenter_id: posting.owner.id, 
+                                 content: comment_info[:content],
                                  posting_id: posting.id)
     end
   end

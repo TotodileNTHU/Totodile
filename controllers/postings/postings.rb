@@ -44,6 +44,21 @@ class TotodileAPI < Sinatra::Base
     end
   end
 
+  #get all postings of all account without token
+  get '/api/v1/postings_test/?' do
+    content_type 'application/json'
+
+    begin
+      viewable_postings =
+        Posting.all.sort_by{|post| post.created_at}.reverse
+      JSON.pretty_generate(data: viewable_postings)
+    rescue
+      error_msg = "FAILED to find all postings of all account for user: #{requesting_account.id}"
+      logger.info error_msg
+      halt 404, error_msg
+    end
+  end
+
   # Get particular posting for an account
   get '/api/v1/postings/:id' do
     content_type 'application/json'
