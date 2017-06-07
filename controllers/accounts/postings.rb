@@ -7,11 +7,10 @@ class TotodileAPI < Sinatra::Base
     content_type 'application/json'
 
     begin
-      requesting_account = authenticated_account(env)
       target_account = Account[params[:account_id]]
 
       viewable_postings =
-        PostingPolicy::Scope.new(requesting_account, target_account).viewable
+        target_account.owned_postings.sort_by{|post| post.created_at}.reverse
       JSON.pretty_generate(data: viewable_postings)
     rescue
       error_msg = "FAILED to find posting for user: #{params[:account_id]}"

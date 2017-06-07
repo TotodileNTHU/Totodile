@@ -45,7 +45,7 @@ class TotodileAPI < Sinatra::Base
   end
 
   #get all postings of all account without token
-  get '/api/v1/postings_test/?' do
+  get '/api/v1/postings_without_token/?' do
     content_type 'application/json'
 
     begin
@@ -64,14 +64,15 @@ class TotodileAPI < Sinatra::Base
     content_type 'application/json'
 
     begin
-      account = authenticated_account(env)
       posting = Posting[params[:id]]
-
-      check_policy = PostingPolicy.new(account, posting)
-      raise unless check_policy.can_view_posting?
-      posting.full_details
-             .merge(policies: check_policy.summary)
-             .to_json
+      posting.full_details.to_json
+      
+      # check_policy = PostingPolicy.new(account, posting)
+      # raise unless check_policy.can_view_posting?
+      # posting.full_details
+      #        .merge(policies: check_policy.summary)
+      #        .to_json
+      
     rescue => e
       error_msg = "POSTING NOT FOUND: \"#{params[:id]}\""
       logger.error e.inspect

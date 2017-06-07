@@ -24,11 +24,10 @@ class TotodileAPI < Sinatra::Base
     content_type 'application/json'
 
     begin
-      requesting_account = authenticated_account(env)
       target_posting = Posting[params[:posting_id]]
 
       viewable_comments =
-        CommentPolicy::Scope.new(requesting_account, target_posting).viewable
+        target_posting.comments
       JSON.pretty_generate(data: viewable_comments)
     rescue => e
       error_msg = "FAILED to find comments for posting: #{params[:posting_id]}"
