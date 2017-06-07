@@ -28,7 +28,23 @@ class TotodileAPI < Sinatra::Base
 
       viewable_comments =
         target_posting.comments
-      JSON.pretty_generate(data: viewable_comments)
+
+      name_pool = []
+      commenter_secret = []
+      viewable_comments.map do |comment|
+        if name_pool.include?(comment.commenter_name)
+          commenter_secret.push(name_pool.index(comment.commenter_name))
+        else
+          name_pool.push(comment.commenter_name)
+          commenter_secret.push(name_pool.index(comment.commenter_name))
+        end
+      end
+      puts name_pool
+      puts commenter_secret
+
+
+      
+      JSON.pretty_generate(data: viewable_comments, commenter_secret: commenter_secret)
     rescue => e
       error_msg = "FAILED to find comments for posting: #{params[:posting_id]}"
       logger.info error_msg
