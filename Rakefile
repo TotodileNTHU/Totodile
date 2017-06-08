@@ -73,9 +73,20 @@ namespace :crypto do
   task :db_key do
     puts "DB_KEY: #{SecureDB.generate_key}"
   end
-
+  
+  desc 'Create sample token key for communication'
   task :token_key do
     puts "TOKEN_KEY: #{AuthToken.generate_key}"
+  end
+
+  desc 'Create sample private/public keypair for signed communication'
+  task :signing_key do
+    require 'rbnacl/libsodium'
+    signing_key = RbNaCl::SigningKey.generate
+    verify_key = signing_key.verify_key
+
+    puts "SIGNING KEY: #{Base64.strict_encode64(signing_key)}"
+    puts " VERIFY KEY: #{Base64.strict_encode64(verify_key)}"
   end
 end
 

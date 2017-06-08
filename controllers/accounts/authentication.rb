@@ -7,7 +7,8 @@ class TotodileAPI < Sinatra::Base
 
     content_type 'application/json'
     begin
-      credentials = JsonRequestBody.parse_symbolize(request.body.read)
+      credentials = SignedRequest.new(settings.config)
+                                 .parse(request.body.read)
       authenticated = AuthenticateAccount.call(credentials)
     rescue => e
       halt 500
